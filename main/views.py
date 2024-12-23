@@ -2,6 +2,16 @@ from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.http import JsonResponse
 
+from .bsbi import BSBIIndex
+from .compression import VBEPostings
+
+# sebelumnya sudah dilakukan indexing
+# BSBIIndex hanya sebagai abstraksi untuk index tersebut
+BSBI_instance = BSBIIndex(data_dir='wikIR1k',
+                          postings_encoding=VBEPostings,
+                          output_dir='index')
+
+
 
 
 def home(request):
@@ -40,21 +50,22 @@ def autocomplete(request):
     return JsonResponse({'suggestions': suggestions})
 
 
-#TODO: diganti ama query_auto_complete beneren
+#TODO: masih salah
 def query_auto_completion(query):
     """
-    Hardcoded query auto-completion logic.
+    Get auto-completion suggestions for the input query.
     """
-    # Hardcoded recommendations based on the query
-    all_suggestions = {
-        "search": ["engine", "algorithm", "system", "query", "results"],
-        "sea": ["search", "seal", "season", "seashore", "seattle"],
-        "sys": ["system", "syntax", "synthesis", "synergy", "systematic"],
-    }
 
-    # Use the first 3 letters as a key to find suggestions
-    key = query[:3].lower()
-    return all_suggestions.get(key, [])[:5] 
+    completions = [query]
+    completions += (BSBI_instance.get_query_recommendations(query))
+    for i, completion in enumerate(completions, start=1):
+        if i == 1:
+            print(f"{i}. {query}")
+            completions[i-1] = query
+        else:
+            print(f"{i}. {query}{completion}")
+            completions[i-1] = query + completion
+    return completions
 
 def select_query(completions):
     """
