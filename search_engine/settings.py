@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    'main',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,8 +55,8 @@ ROOT_URLCONF = 'search_engine.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [],  # If you want to add global template dirs, add them here
+        'APP_DIRS': True,  # This allows Django to look for templates in app-specific `templates/` directories
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',

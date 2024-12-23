@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 20px;">
+        <form action="{% url 'main:results' %}" method="get">
+            <input type="text" name="q" value="{{ query }}" style="width: 50%; padding: 10px;">
+            <button type="submit" style="padding: 10px;">Search</button>
+        </form>
+        <h2>Results</h2>
+        <ul style="list-style-type: none;">
+            <li>{{ query }}</li>
+        </ul>
+    </div>
+</body>
+</html>

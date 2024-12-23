@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 20%;">
+        <h1>Search App</h1>
+        <form action="{% url 'main:results' %}" method="get">
+            <input type="text" name="q" placeholder="Search..." style="width: 50%; padding: 10px;">
+            <button type="submit" style="padding: 10px;">Search</button>
+        </form>
+    </div>
+</body>
+</html>
