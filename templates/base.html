@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Search Engine{% endblock %}</title>
+    <!-- Add your CSS files or frameworks like Bootstrap here -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav style="background-color: #333; color: white; padding: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: auto;">
+            <a href="{% url 'main:home' %}" style="color: white; text-decoration: none; font-size: 24px;">Search App</a>
+            <ul style="list-style: none; display: flex; gap: 20px; margin: 0; padding: 0;">
+                <li><a href="{% url 'main:home' %}" style="color: white; text-decoration: none;">Home</a></li>
+                <li><a href="{% url 'main:results' %}?q=" style="color: white; text-decoration: none;">Search</a></li>
+                <!-- Add more links as needed -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Content Block -->
+    <div style="padding: 20px;">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer style="background-color: #333; color: white; text-align: center; padding: 10px;">
+        <p>&copy; 2024 Search App. All rights reserved.</p>
+    </footer>
+</body>
+</html>

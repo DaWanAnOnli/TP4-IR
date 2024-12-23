@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#suggestions {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#suggestions li:hover {
+    background-color: #f1f1f1;
+}
+
+.container {
+    padding-bottom: 60px; /* To ensure footer doesn't overlap content */
+}
