@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -31,11 +32,11 @@ def perform_search(query):
 
 def results(request):
     query = request.GET.get('q', '')
-    all_results = perform_search(query)  # Get the results
-
-    print (all_results)
-
+    search_results = perform_search(query)  # Get the results
     
+    # Convert tuples into list of dictionaries while preserving the pairs
+    all_results = [{'score': score, 'id': doc_id} for score, doc_id in search_results]
+
     # Paginate
     paginator = Paginator(all_results, 10)
     page_number = request.GET.get('page', 1)
@@ -46,6 +47,31 @@ def results(request):
     }
     return render(request, 'results.html', context)
 
+
+import csv
+import os
+
+def doc_detail(request, doc_id):
+    if doc_id:
+        # Read from CSV file
+        csv_path = os.path.join(settings.BASE_DIR, 'main', 'wikIR1k', 'documents-trimmed.csv')
+        with open(csv_path, 'r', encoding='utf-8') as file:
+            csv_reader = csv.DictReader(file)
+            for row in csv_reader:
+                if row['id_right'] == str(doc_id):
+                    doc_info = {'id': row['id_right'], 'text': row['text_right']}
+
+                    print(doc_info)
+                    print(doc_info)
+                    print(doc_info)
+                    print(doc_info)
+                    print(doc_info)
+                    print(doc_info)
+                    print(doc_info)
+                    print(doc_info)
+                    return render(request, 'doc_detail.html', {'doc': doc_info})
+
+    return render(request, 'doc_detail.html', {'error': 'Document not found'})
 
 
 

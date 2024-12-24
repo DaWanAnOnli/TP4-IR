@@ -3,7 +3,7 @@
 {% block title %}Search Results - Search App{% endblock %}
 
 {% block content %}
-<div class="mt-4">
+<div class="mt-4" style="background-color: inherit; color: white; text-align: center;">
     <form id="search-form" action="{% url 'main:results' %}" method="get" class="mb-4">
         <div class="input-group">
             <input
@@ -14,51 +14,63 @@
                 placeholder="Search..."
                 class="form-control"
                 oninput="fetchSuggestions()"
+                style="background-color: inherit; color: white; border: 1px solid white;"
             >
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" class="but">Search</button>
         </div>
     </form>
-    <ul id="suggestions" class="list-group mb-4" style="width: 50%; margin: 0 auto;"></ul>
+    <ul id="suggestions" class="list-group mb-4" style="width: 50%; margin: 0 auto;">
+    </ul>
 
     <h2>Results for "{{ query }}"</h2>
-    <ul class="list-group">
+    <ul style="list-style-type: none; padding: 0;">
         {% for result in page_obj %}
-            <li class="list-group-item">{{ result }}</li>
+            <li style="margin: 10px 0;">
+                {% if result.id %}
+                » <a href="{% url 'main:doc_detail' doc_id=result.id %}"
+                     style="color: white; text-decoration: none; transition: color 0.2s;"
+                     onmouseover="this.style.color='#ccc';"
+                     onmouseout="this.style.color='white';">
+                     Document: {{ result.id }} ( {{ result.score|floatformat:4 }} )
+                   </a>
+                {% else %}
+                    {{ result }}
+                {% endif %}
+            </li>
         {% empty %}
-            <li class="list-group-item">No results found.</li>
+            <li style="margin: 10px 0;">No results found.</li>
         {% endfor %}
     </ul>
 
-    <!-- Pagination controls -->
     <nav aria-label="Page navigation" class="mt-4">
         <ul class="pagination justify-content-center">
             {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <a class="page-link" style="background-color: inherit; color: white;" href="?q={{ query }}&page={{ page_obj.previous_page_number }}" aria-label="Previous">
                         <span aria-hidden="true">&laquo; Previous</span>
                     </a>
                 </li>
             {% else %}
                 <li class="page-item disabled">
-                    <span class="page-link" aria-hidden="true">&laquo; Previous</span>
+                    <span class="page-link" style="background-color: inherit; color: white;" aria-hidden="true">&laquo; Previous</span>
                 </li>
             {% endif %}
 
             <li class="page-item disabled">
-                <span class="page-link">
+                <span class="page-link" style="background-color: inherit; color: white;">
                     Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
                 </span>
             </li>
 
             {% if page_obj.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <a class="page-link" style="background-color: inherit; color: white;" href="?q={{ query }}&page={{ page_obj.next_page_number }}" aria-label="Next">
                         <span aria-hidden="true">Next &raquo;</span>
                     </a>
                 </li>
             {% else %}
                 <li class="page-item disabled">
-                    <span class="page-link" aria-hidden="true">Next &raquo;</span>
+                    <span class="page-link" style="background-color: inherit; color: white;" aria-hidden="true">Next &raquo;</span>
                 </li>
             {% endif %}
         </ul>
@@ -70,26 +82,22 @@
 <script>
     function fetchSuggestions() {
         const query = document.getElementById('search-input').value;
-
-        // Only fetch suggestions if query length is 3 or more
         if (query.length >= 3) {
             fetch(`/autocomplete/?q=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
                     const suggestionsList = document.getElementById('suggestions');
-                    suggestionsList.innerHTML = ''; // Clear previous suggestions
-
+                    suggestionsList.innerHTML = '';
                     data.suggestions.forEach(suggestion => {
                         const listItem = document.createElement('li');
                         listItem.textContent = suggestion;
                         listItem.classList.add('list-group-item', 'list-group-item-action');
-
-                        // Add click event to perform search with the suggestion
+                        listItem.style.backgroundColor = 'inherit';
+                        listItem.style.color = 'white';
                         listItem.addEventListener('click', () => {
                             document.getElementById('search-input').value = suggestion;
                             document.getElementById('search-form').submit();
                         });
-
                         suggestionsList.appendChild(listItem);
                     });
                 })
@@ -97,7 +105,6 @@
                     console.error('Error fetching suggestions:', error);
                 });
         } else {
-            // Clear suggestions if query length is less than 3
             document.getElementById('suggestions').innerHTML = '';
         }
     }
