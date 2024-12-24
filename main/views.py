@@ -10,7 +10,8 @@ from .compression import VBEPostings
 BSBI_instance = BSBIIndex(data_dir='wikIR1k',
                           postings_encoding=VBEPostings,
                           output_dir='index')
-BSBI_instance.load()
+BSBI_instance.do_indexing()
+print("done indexing")
 
 
 
@@ -60,6 +61,7 @@ def query_auto_completion(query):
     """
 
     completions = [query]
+    print("!a")
     completions += (BSBI_instance.get_query_recommendations(query))
     for i, completion in enumerate(completions, start=1):
         if i == 1:

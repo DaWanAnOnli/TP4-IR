@@ -14,8 +14,24 @@ from main.index import InvertedIndexReader, InvertedIndexWriter
 from main.trie import Trie
 from main.util import IdMap, merge_and_sort_posts_and_tfs
 from main.compression import VBEPostings
+
+# from index import InvertedIndexReader, InvertedIndexWriter
+# from trie import Trie
+# from util import IdMap, merge_and_sort_posts_and_tfs
+# from compression import VBEPostings
+
 from tqdm import tqdm
 from django.conf import settings
+
+
+import os
+import sys
+
+# Add the root directory (above 'main') to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# Set the DJANGO_SETTINGS_MODULE environment variable
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'search_engine.settings')
 
 class BSBIIndex:
     """
@@ -74,13 +90,17 @@ class BSBIIndex:
             terms_path = os.path.join(settings.BASE_DIR, 'main', 'index', 'terms.dict')
             docs_path = os.path.join(settings.BASE_DIR, 'main', 'index', 'docs.dict')
             trie_path = os.path.join(settings.BASE_DIR, 'main', 'index', 'trie.pkl')
-
+            print(trie_path)
+            print("c")
             with open(terms_path, 'rb') as f:
+                print("d")
                 self.term_id_map = pickle.load(f)
+            
             with open(docs_path, 'rb') as f:
                 self.doc_id_map = pickle.load(f)
             with open(trie_path, 'rb') as f:
                 self.trie = pickle.load(f)
+            
         except FileNotFoundError as e:
             print(f"File not found during load: {e}")
             # Handle the error appropriately
@@ -602,11 +622,12 @@ class BSBIIndex:
 
     
     def get_query_recommendations(self, query, k=5):
-        
+        print("!b")
         # Method untuk mendapatkan rekomendasi untuk QAC
         # Tidak perlu mengubah ini
-        self.load()
+        # self.load()
         last_token = query.split()[-1]
+        
         recc = self.trie.get_recommendations(last_token, k)
         return recc
 
@@ -629,4 +650,4 @@ if __name__ == "__main__":
     BSBI_instance = BSBIIndex(data_dir='wikIR1k',
                               postings_encoding=VBEPostings,
                               output_dir='index')
-    BSBI_instance.do_indexing()  # memulai indexing!
+    # BSBI_instance.do_indexing()  # memulai indexing!

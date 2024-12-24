@@ -50,6 +50,7 @@ class Trie:
             jika tidak match
         """
         node = self.root
+        print("node children: ", node.children)
         for char in query:
             if char in node.children:
                 node = node.children[char]
