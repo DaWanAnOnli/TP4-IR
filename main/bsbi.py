@@ -61,7 +61,8 @@ class BSBIIndex:
         self.intermediate_indices = []
         self.index_file_path = os.path.join(settings.BASE_DIR, 'main', 'index', 'main_index.index')
         try:
-            self.index_file = open(self.index_file_path, 'rb+')
+            # self.index_file = open(self.index_file_path, 'rb+')
+            pass
         except FileNotFoundError:
             # Handle the error: log it, create the file, etc.
             print(f"Index file not found at {self.index_file_path}")
@@ -75,12 +76,12 @@ class BSBIIndex:
             docs_path = os.path.join(settings.BASE_DIR, 'main', 'index', 'docs.dict')
             trie_path = os.path.join(settings.BASE_DIR, 'main', 'index', 'trie.pkl')
 
-            with open(terms_path, 'wb') as f:
-                pickle.dump(self.term_id_map, f)
-            with open(docs_path, 'wb') as f:
-                pickle.dump(self.doc_id_map, f)
-            with open(trie_path, 'wb') as f:
-                pickle.dump(self.trie, f)
+            # with open(terms_path, 'wb') as f:
+            #     pickle.dump(self.term_id_map, f)
+            # with open(docs_path, 'wb') as f:
+            #     pickle.dump(self.doc_id_map, f)
+            # with open(trie_path, 'wb') as f:
+            #     pickle.dump(self.trie, f)
         except Exception as e:
             print(f"Error saving files: {e}")
             # Handle the error appropriately
