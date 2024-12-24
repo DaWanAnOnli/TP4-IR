@@ -6,8 +6,8 @@
 
     background-color: #232323;
     color: #ffffff;
-    max-height: 200px;
-    overflow-y: auto;
+    /* max-height: 200px; */
+    /* overflow-y: auto; */
   }
   
   /* Individual suggestion items */
@@ -40,7 +40,6 @@ body {
 
 #suggestions {
     max-height: 200px;
-    overflow-y: auto;
 }
 
 #suggestions li:hover {
@@ -57,16 +56,17 @@ h1 {
     text-transform: uppercase;
     font-size: 2em;
     letter-spacing: 4px;
-    overflow: hidden;
-    background: linear-gradient(90deg, #999999, #232323, #999999);
-    background-repeat: no-repeat;
-    background-size: 80%;
-    animation: animate 3s linear infinite;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: rgba(86, 86, 86, 0);
-  }
-
-  @keyframes animate {
+  overflow: hidden;
+  background: linear-gradient(90deg, #999999, #232323, #999999);
+  background-repeat: no-repeat;
+  background-size: 80%;
+  animation: animate 3s linear infinite;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: rgba(86, 86, 86, 0);
+    }
+  
+    @keyframes animate {
     0% {
       background-position: -500%;
     }
@@ -368,19 +368,19 @@ h1 {
 	50% { transform: translate(-4px, 8px) rotate(-45deg); }
 	100% { transform: translate(0px, 0px) rotate(0deg); }
 }
-
 .magnifier .glass {
-	cx: 27;
-	cy: 27;
-	r: 8;
-	stroke-width: 3;
+  cx: 27;
+  cy: 27;
+  r: 8;
+  stroke-width: 3;
 }
+/* removing unknown properties */
 .magnifier .handle {
-	x1: 32;
-	y1: 32;
-	x2: 44;
-	y2: 44;
-	stroke-width: 3;
+/*	x1: 32;
+  y1: 32;
+  x2: 44;
+  y2: 44;*/
+  stroke-width: 3;
 }
 
 

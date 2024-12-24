@@ -21,22 +21,31 @@ def home(request):
     
     return render(request, 'home.html')
 
+def perform_search(query):
+    print("Hasil pencarian:")
+    # Retrieve and limit to 100
+    results = BSBI_instance.retrieve_bm25_taat(query, k=100, k1=1.065, b=0)
+    # for score, doc in results:
+    #     print(f"{doc} \t\t {score}")
+    return results  # Return actual results
+
 def results(request):
-    query = request.GET.get('q', '')  # Get the query parameter
+    query = request.GET.get('q', '')
+    all_results = perform_search(query)  # Get the results
 
-    # Perform the search
-    all_results = perform_search(query)
+    print (all_results)
 
-    # Paginate results: 10 per page
+    
+    # Paginate
     paginator = Paginator(all_results, 10)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
-
     context = {
         'query': query,
-        'page_obj': page_obj,  # Paginated results
+        'page_obj': page_obj,
     }
     return render(request, 'results.html', context)
+
 
 
 
@@ -81,16 +90,3 @@ def select_query(completions):
     print(f"\nPilihan Anda adalah '{selected_query}'.\n")
     return selected_query
 
-def perform_search(query):
-    """
-    Perform a search for the given query.
-    """
-    results_data = {
-        "search engine": [
-            f"Document {i + 1}" for i in range(50)
-        ],  # Simulating 50 results
-        "search algorithm": [
-            f"Document {i + 1}" for i in range(35)
-        ],
-    }
-    return results_data.get(query, ["No results found."])

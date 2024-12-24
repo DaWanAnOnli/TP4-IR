@@ -128,8 +128,8 @@
 
                         data.suggestions.forEach(suggestion => {
                             const listItem = document.createElement('li');
-                            listItem.textContent = '► ' + suggestion;
-                            listItem.classList.add('suggestions', 'list-group-item', 'list-group-item-action', 'text-start');
+                            listItem.textContent = suggestion;
+                            listItem.classList.add('suggestions', 'text-start');
 
                             listItem.addEventListener('click', () => {
                                 document.getElementById('search-input').value = suggestion;
@@ -142,7 +142,8 @@
                     .catch(error => {
                         console.error('Error fetching suggestions:', error);
                     });
-            } else {
+            } 
+            else {
                 document.getElementById('suggestions').innerHTML = '';
             }
         }
