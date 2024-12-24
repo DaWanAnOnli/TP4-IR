@@ -12,7 +12,7 @@
     ],
 
     "functions": {
-        "search_engine/**/*": {
+        "app/api/**/*": {
           "maxDuration": 60
         }
       }
