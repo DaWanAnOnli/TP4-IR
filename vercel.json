@@ -9,5 +9,11 @@
             "src": "/(.*)",
             "dest": "search_engine/wsgi.py"
         }
-    ]
+    ],
+
+    "functions": {
+        "search_engine/**/*": {
+          "maxDuration": 60
+        }
+      }
 }
