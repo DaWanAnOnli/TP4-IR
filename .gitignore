@@ -136,7 +136,7 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 
-main/wikIR1k/*
-main/wikIR1k
-main/index
-main/index/*
+# main/wikIR1k/*
+# main/wikIR1k
+# main/index
+# main/index/*

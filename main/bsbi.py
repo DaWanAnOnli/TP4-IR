@@ -9,6 +9,11 @@ from porter2stemmer import Porter2Stemmer
 #import requests
 import string
 
+import nltk
+nltk.download('stopwords')
+
+
+
 from nltk.corpus import stopwords
 from main.index import InvertedIndexReader, InvertedIndexWriter
 from main.trie import Trie
