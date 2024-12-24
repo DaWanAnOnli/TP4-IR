@@ -638,6 +638,34 @@ class BSBIIndex:
         
         recc = self.trie.get_recommendations(last_token, k)
         return recc
+    
+
+    def get_text_by_doc_id(self, doc_id, csv_path):
+        """
+        Retrieve the text associated with a given docID.
+
+        Parameters
+        ----------
+        doc_id : int
+            The docID for which to retrieve the associated text.
+
+        csv_path : str
+            Path to the CSV file containing the document data.
+
+        Returns
+        -------
+        str
+            The text associated with the given docID, or None if not found.
+        """
+        # Open the CSV file and search for the corresponding text
+        with open(csv_path, newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row['id_right'] == str(doc_id):
+                    return row['text_right']
+
+        # If no match is found, return None
+        return None
 
 if __name__ == "__main__":
 

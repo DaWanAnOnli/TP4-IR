@@ -7,3 +7,5 @@ urllib3
 joblib
 porter2stemmer
 nltk
+xgboost
+transformers

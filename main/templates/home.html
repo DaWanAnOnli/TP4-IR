@@ -96,10 +96,10 @@
                         name="q"
                         placeholder="Search..."
                         class="form-control"
+                        pattern=".*[A-Za-z].*"
+                        required
                         oninput="fetchSuggestions()"
-                    >
-                    
-                    <!-- Submit button -->
+                    />
                     <button type="submit" class="but">Search</button>
                 </div>
             </form>

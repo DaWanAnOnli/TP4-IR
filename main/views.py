@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.http import JsonResponse
+from .letor import *
 
 from .bsbi import BSBIIndex
 from .compression import VBEPostings
@@ -14,8 +15,21 @@ BSBI_instance = BSBIIndex(data_dir='wikIR1k',
                           postings_encoding=VBEPostings,
                           output_dir='index')
 BSBI_instance.do_indexing()
-print("done indexing")
 
+terms_path = os.path.join(settings.BASE_DIR, 'main', 'index', 'terms.dict')
+
+qrels_file = os.path.join(settings.BASE_DIR, 'main', 'wikIR1k', 'training', 'qrels_trimmed')
+
+print("done indexing")
+qrels = load_qrels(qrels_file)
+
+get_query_text(os.path.join(settings.BASE_DIR, 'main', 'wikIR1k', 'training', 'queries.csv'))
+get_document_mapping(os.path.join(settings.BASE_DIR, 'main', 'wikIR1k', 'documents-trimmed-mapping.csv'))
+
+print("valid file paths")
+features, labels, group_sizes = prepare_training_data(qrels, BSBI_instance)
+print("Training LambdaMART model...")
+rerank_model = train_lambda_mart(features, labels, group_sizes)
 
 
 
@@ -24,17 +38,22 @@ def home(request):
     
     return render(request, 'home.html')
 
-def perform_search(query):
-    print("Hasil pencarian:")
-    # Retrieve and limit to 100
-    results = BSBI_instance.retrieve_bm25_taat(query, k=30, k1=1.065, b=0)
-    # for score, doc in results:
-    #     print(f"{doc} \t\t {score}")
-    return results  # Return actual results
+def perform_search(query, model):
+    """
+    Perform a search using the selected query and optionally rerank the results.
+    """
+    print("Hasil pencarian (sebelum reranking):")
+    initial_results = BSBI_instance.retrieve_bm25_taat(query, k=30, k1=1.065, b=0)
+    for score, doc in initial_results:
+        print(f"{doc} \t\t {score}")
+
+    top_docs = [doc for _, doc in initial_results]
+    reranked_results = rerank(query, top_docs, model, BSBI_instance)
+    return reranked_results
 
 def results(request):
     query = request.GET.get('q', '')
-    search_results = perform_search(query)  # Get the results
+    search_results = perform_search(query, rerank_model)  # Get the results
     
     # Convert tuples into list of dictionaries while preserving the pairs
     all_results = [{'score': score, 'id': doc_id} for score, doc_id in search_results]
