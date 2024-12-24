@@ -10,11 +10,14 @@ from .compression import VBEPostings
 BSBI_instance = BSBIIndex(data_dir='wikIR1k',
                           postings_encoding=VBEPostings,
                           output_dir='index')
+BSBI_instance.load()
+
 
 
 
 
 def home(request):
+    
     return render(request, 'home.html')
 
 def results(request):
