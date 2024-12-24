@@ -10,11 +10,11 @@ from porter2stemmer import Porter2Stemmer
 import string
 
 import nltk
-nltk.download('stopwords')
 
 
 
-from nltk.corpus import stopwords
+
+# from nltk.corpus import stopwords
 from main.index import InvertedIndexReader, InvertedIndexWriter
 from main.trie import Trie
 from main.util import IdMap, merge_and_sort_posts_and_tfs
@@ -148,7 +148,8 @@ class BSBIIndex:
         termIDs dan docIDs. Dua variable ini harus 'persist' untuk semua pemanggilan
         parsing_block(...).
         """
-        stop_words = set(stopwords.words('english'))
+        # stop_words = set(stopwords.words('english'))
+        stop_words = set()
         stemmer = Porter2Stemmer()
 
         td_pairs = []
@@ -188,8 +189,8 @@ class BSBIIndex:
         """
         result = []
         stemmer = Porter2Stemmer()
-        stop_words = set(stopwords.words('english'))
-
+        # stop_words = set(stopwords.words('english'))
+        stop_words = set()
         tokenizer_pattern = r"""\b\w+(?:-\w+)*(?:'s|'ll|'ve|'d|'re|'m|'t)?\b"""
 
         with open(csv_path, newline='', encoding='utf-8') as csvfile:
@@ -343,7 +344,8 @@ class BSBIIndex:
 
     def query_to_token(self, query):
         stemmer = Porter2Stemmer()
-        stop_words = set(stopwords.words('english'))
+        # stop_words = set(stopwords.words('english'))
+        stop_words = set()
         tokens = re.findall(r'\w+', query)
 
         query_terms = []
