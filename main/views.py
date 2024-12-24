@@ -27,7 +27,7 @@ def home(request):
 def perform_search(query):
     print("Hasil pencarian:")
     # Retrieve and limit to 100
-    results = BSBI_instance.retrieve_bm25_taat(query, k=100, k1=1.065, b=0)
+    results = BSBI_instance.retrieve_bm25_taat(query, k=30, k1=1.065, b=0)
     # for score, doc in results:
     #     print(f"{doc} \t\t {score}")
     return results  # Return actual results
@@ -40,7 +40,7 @@ def results(request):
     all_results = [{'score': score, 'id': doc_id} for score, doc_id in search_results]
 
     # Paginate
-    paginator = Paginator(all_results, 10)
+    paginator = Paginator(all_results, 5)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
     context = {
