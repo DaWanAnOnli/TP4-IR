@@ -1,4 +1,4 @@
-FROM python:3.10-slim-buster
+FROM python:3.11-slim
 WORKDIR /app
 ENV PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app \
@@ -18,9 +18,9 @@ COPY . .
 RUN python manage.py collectstatic --noinput --clear
 # Run as non-root user
 RUN chown -R django:django /app
-USER django
+# USER django
 
 
 # Run application
 # CMD gunicorn search_engine.wsgi:application
-CMD ["python3", "manage.py", "runserver"]
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
