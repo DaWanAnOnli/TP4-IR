@@ -10,10 +10,10 @@ from porter2stemmer import Porter2Stemmer
 import string
 
 from nltk.corpus import stopwords
-from .index import InvertedIndexReader, InvertedIndexWriter
-from .trie import Trie
-from .util import IdMap, merge_and_sort_posts_and_tfs
-from .compression import VBEPostings
+from main.index import InvertedIndexReader, InvertedIndexWriter
+from main.trie import Trie
+from main.util import IdMap, merge_and_sort_posts_and_tfs
+from main.compression import VBEPostings
 from tqdm import tqdm
 from django.conf import settings
 
@@ -560,7 +560,9 @@ class BSBIIndex:
         untuk parsing dokumen dan memanggil write_to_index yang melakukan inversion
         di setiap block dan menyimpannya ke index yang baru.
         """
-        csv_path = os.path.join(self.data_dir, "documents-trimmed.csv")
+
+        base_dir = os.path.dirname(os.path.abspath(__file__))  # Directory of bsbi.py
+        csv_path = os.path.join(base_dir, self.data_dir, 'documents-trimmed.csv')
         td_pairs = self.parsing_csv(csv_path)
         index_id = "intermediate_index"
         self.intermediate_indices.append(index_id)
@@ -600,6 +602,7 @@ class BSBIIndex:
 
     
     def get_query_recommendations(self, query, k=5):
+        
         # Method untuk mendapatkan rekomendasi untuk QAC
         # Tidak perlu mengubah ini
         self.load()
@@ -608,6 +611,20 @@ class BSBIIndex:
         return recc
 
 if __name__ == "__main__":
+
+
+    import os
+    import sys
+
+    # Add the root directory (above 'main') to the Python path
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+    # Set the DJANGO_SETTINGS_MODULE environment variable
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'search_engine.settings')
+
+    # Initialize Django
+    import django
+    django.setup()
 
     BSBI_instance = BSBIIndex(data_dir='wikIR1k',
                               postings_encoding=VBEPostings,
