@@ -1,3 +1,5 @@
+import csv
+import os
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.shortcuts import render
@@ -48,10 +50,12 @@ def results(request):
     return render(request, 'results.html', context)
 
 
-import csv
-import os
 
 def doc_detail(request, doc_id):
+    # Get query and page from request parameters
+    query = request.GET.get('q', '')
+    page = request.GET.get('page', '1')
+
     if doc_id:
         # Read from CSV file
         csv_path = os.path.join(settings.BASE_DIR, 'main', 'wikIR1k', 'documents-trimmed.csv')
@@ -60,18 +64,18 @@ def doc_detail(request, doc_id):
             for row in csv_reader:
                 if row['id_right'] == str(doc_id):
                     doc_info = {'id': row['id_right'], 'text': row['text_right']}
+                    # Add query and page to context
+                    return render(request, 'doc_detail.html', {
+                        'doc': doc_info,
+                        'query': query,
+                        'page': page
+                    })
 
-                    print(doc_info)
-                    print(doc_info)
-                    print(doc_info)
-                    print(doc_info)
-                    print(doc_info)
-                    print(doc_info)
-                    print(doc_info)
-                    print(doc_info)
-                    return render(request, 'doc_detail.html', {'doc': doc_info})
-
-    return render(request, 'doc_detail.html', {'error': 'Document not found'})
+    return render(request, 'doc_detail.html', {
+        'error': 'Document not found',
+        'query': query,
+        'page': page
+    })
 
 
 
@@ -89,7 +93,6 @@ def autocomplete(request):
     return JsonResponse({'suggestions': suggestions})
 
 
-#TODO: masih salah
 def query_auto_completion(query):
     """
     Get auto-completion suggestions for the input query.

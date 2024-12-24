@@ -9,7 +9,12 @@ from porter2stemmer import Porter2Stemmer
 #import requests
 import string
 
-from nltk.corpus import stopwords
+import nltk
+
+
+
+
+# from nltk.corpus import stopwords
 from main.index import InvertedIndexReader, InvertedIndexWriter
 from main.trie import Trie
 from main.util import IdMap, merge_and_sort_posts_and_tfs
@@ -61,7 +66,8 @@ class BSBIIndex:
         self.intermediate_indices = []
         self.index_file_path = os.path.join(settings.BASE_DIR, 'main', 'index', 'main_index.index')
         try:
-            self.index_file = open(self.index_file_path, 'rb+')
+            # self.index_file = open(self.index_file_path, 'rb+')
+            pass
         except FileNotFoundError:
             # Handle the error: log it, create the file, etc.
             print(f"Index file not found at {self.index_file_path}")
@@ -75,12 +81,12 @@ class BSBIIndex:
             docs_path = os.path.join(settings.BASE_DIR, 'main', 'index', 'docs.dict')
             trie_path = os.path.join(settings.BASE_DIR, 'main', 'index', 'trie.pkl')
 
-            with open(terms_path, 'wb') as f:
-                pickle.dump(self.term_id_map, f)
-            with open(docs_path, 'wb') as f:
-                pickle.dump(self.doc_id_map, f)
-            with open(trie_path, 'wb') as f:
-                pickle.dump(self.trie, f)
+            # with open(terms_path, 'wb') as f:
+            #     pickle.dump(self.term_id_map, f)
+            # with open(docs_path, 'wb') as f:
+            #     pickle.dump(self.doc_id_map, f)
+            # with open(trie_path, 'wb') as f:
+            #     pickle.dump(self.trie, f)
         except Exception as e:
             print(f"Error saving files: {e}")
             # Handle the error appropriately
@@ -142,7 +148,8 @@ class BSBIIndex:
         termIDs dan docIDs. Dua variable ini harus 'persist' untuk semua pemanggilan
         parsing_block(...).
         """
-        stop_words = set(stopwords.words('english'))
+        # stop_words = set(stopwords.words('english'))
+        stop_words = set()
         stemmer = Porter2Stemmer()
 
         td_pairs = []
@@ -182,8 +189,8 @@ class BSBIIndex:
         """
         result = []
         stemmer = Porter2Stemmer()
-        stop_words = set(stopwords.words('english'))
-
+        # stop_words = set(stopwords.words('english'))
+        stop_words = set()
         tokenizer_pattern = r"""\b\w+(?:-\w+)*(?:'s|'ll|'ve|'d|'re|'m|'t)?\b"""
 
         with open(csv_path, newline='', encoding='utf-8') as csvfile:
@@ -337,7 +344,8 @@ class BSBIIndex:
 
     def query_to_token(self, query):
         stemmer = Porter2Stemmer()
-        stop_words = set(stopwords.words('english'))
+        # stop_words = set(stopwords.words('english'))
+        stop_words = set()
         tokens = re.findall(r'\w+', query)
 
         query_terms = []
